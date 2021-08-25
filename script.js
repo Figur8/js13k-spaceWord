@@ -98,7 +98,7 @@ function init() {
             if(word.length == 0) {
                 words.splice(0,1)
                 word = words[0]
-                gameObjects.pop()
+                gameObjects.splice(0, 1)
             }
         }
     }, false);
@@ -151,7 +151,6 @@ function detectCollisions() {
         for (let j = i + 1; j < gameObjects.length; j++) {
             obj2 = gameObjects[j];
             if (rectIntersect(obj1.x, obj1.y, obj1.width, obj1.height, obj2.x, obj2.y, obj2.width, obj2.height) || circleIntersect(obj1.x, obj1.y, obj1.radius, obj2.x, obj2.y, obj2.radius)){
-                console.log()
                 obj1.isColliding = true;
                 obj2.isColliding = true;
 
