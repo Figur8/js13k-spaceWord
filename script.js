@@ -11,6 +11,11 @@ let mouseX = 300
 let mouseY = 300
 let words = []
 let word = ""
+let elapsedTime = 0;
+let timerInterval;
+let startTime
+let isDead = false
+
 
 window.onload = init;
 
@@ -28,6 +33,7 @@ class GameObject {
 class MainCharacter extends GameObject {
     constructor(context, x, y, vx, vy) {
         super(context, x, y, vx, vy);
+        this.lives = 3;
         this.width = 50;
         this.height = 0;
         this.radius = 30
@@ -43,6 +49,11 @@ class MainCharacter extends GameObject {
         //TODO - precisa calcular velocidade com o mouse
         this.x = mouseX;
         this.y = mouseY;
+        if (this.isColliding) {
+            --this.lives
+            isDead = true
+            console.log(this.lives)
+        }
     }
     setMousePosition(e) {
         let canvasPos = getPosition(canvas)
@@ -74,7 +85,7 @@ class Circle extends GameObject {
         this.radius = 30
     }
     draw() {
-        this.context.fillStyle = this.isColliding?'#ff8080':'#0099b0';
+        this.context.fillStyle = this.isColliding?'#F3F3F3':'#F3F3F3';
         this.context.beginPath();
         this.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
         this.context.fill();
@@ -98,7 +109,7 @@ function init() {
             if(word.length == 0) {
                 words.splice(0,1)
                 word = words[0]
-                gameObjects.splice(0, 1)
+                gameObjects.splice(1, 1)
             }
         }
     }, false);
@@ -109,6 +120,7 @@ function createWorld() {
     gameObjects = [
         new MainCharacter(context, 300, 300, 50, -50),
     ];
+    startTime = Date.now() - elapsedTime;
     createAnEnemy();
     setInterval(createAnEnemy, 3000);
 }
@@ -128,7 +140,7 @@ function generateString(length) {
 function createAnEnemy() {
     words.push(generateString(getRandomInt(4, 7)))
     console.log(word)
-    gameObjects.push(new Circle(context, getRandomInt(0, 300), getRandomInt(0, 300), 0, 50))
+    gameObjects.push(new Circle(context, getRandomInt(0, 500), getRandomInt(0, 500), getRandomInt(0, 100), getRandomInt(0, 100)))
 }
 
 function getRandomInt(min, max) {
@@ -215,20 +227,53 @@ function gameLoop(timeStamp) {
     for (let i = 0; i < gameObjects.length; i++) {
         gameObjects[i].update(secondsPassed);
     }
-
-
     detectCollisions();
     detectEdgeCollisions()
     clearCanvas();
-    for (let i = 0; i < gameObjects.length; i++) {
-        const ctx = canvas.getContext('2d');
-        ctx.fillStyle = 'green';
 
-        ctx.font = '60px san-serif';
-        ctx.fillText(word, 300, 300, 250);
+    for (let i = 0; i < gameObjects.length; i++) {
+        if(words.length === 0) {
+            createAnEnemy()
+            word = words[0]
+        }
+        html = "<h1>" + word + "</h1>"
+
+        timerInterval = setInterval(function printTime() {
+            if(!isDead) {
+                elapsedTime = Date.now() - startTime;
+            }
+        }, 10);
+        timer = "<h1>" + timeToString(elapsedTime) + "</h1>"
+        document.querySelector('.text').innerHTML = html
+        document.querySelector('.cronometer').innerHTML = timer
         gameObjects[i].draw();
     }
     window.requestAnimationFrame(gameLoop);
+}
+
+function pause() {
+    clearInterval(timerInterval);
+}
+
+function timeToString(time) {
+    //TODO - Entendi nada não mas tamo ai - https://tinloof.com/blog/how-to-build-a-stopwatch-with-html-css-js-react-part-2/
+    let diffInHrs = time / 3600000;
+    let hh = Math.floor(diffInHrs);
+
+    let diffInMin = (diffInHrs - hh) * 60;
+    let mm = Math.floor(diffInMin);
+
+    let diffInSec = (diffInMin - mm) * 60;
+    let ss = Math.floor(diffInSec);
+
+    let diffInMs = (diffInSec - ss) * 100;
+    let ms = Math.floor(diffInMs);
+
+    let formattedMM = mm.toString().padStart(2, "0");
+    let formattedSS = ss.toString().padStart(2, "0");
+    let formattedMS = ms.toString().padStart(2, "0");
+
+    return `${formattedMM}:${formattedSS}:${formattedMS}`;
 }
 
 function clearCanvas() {

@@ -1,4 +1,20 @@
+body {
+    background-color: black;
+}
+
 canvas {
-    background: radial-gradient(circle at bottom, navy 0, black 100%);
     overflow: hidden;
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+}
+
+h1 {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: auto;
+    margin-right: auto;
+    color: aliceblue;
 }
