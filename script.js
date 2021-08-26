@@ -15,6 +15,8 @@ let elapsedTime = 0;
 let timerInterval;
 let startTime
 let isDead = false
+let lastTime = 0
+let invencibilityTime = 2000
 
 
 window.onload = init;
@@ -36,22 +38,39 @@ class MainCharacter extends GameObject {
         this.lives = 3;
         this.width = 50;
         this.height = 0;
-        this.radius = 30
+        this.radius = 30;
+
         canvas.addEventListener("mousemove", this.setMousePosition, false);
     }
     draw() {
         this.context.fillStyle = this.isColliding?'#2C2C2C':'#C0C0C0';
         this.context.beginPath();
         this.context.arc(mouseX, mouseY, this.radius, 0, 2 * Math.PI, false);
-        this.context.fill();
+        this.context.fill()
     }
     update() {
         //TODO - precisa calcular velocidade com o mouse
         this.x = mouseX;
         this.y = mouseY;
-        if (this.isColliding) {
-            --this.lives
+        if(this.lives >= 0) {
+            let liveShow = "<h1>"
+            for (let i = 0; i < this.lives && this.lives > 0; i++) {
+                liveShow = liveShow + "🚀"
+            }
+            liveShow = liveShow + "</h1>"
+            console.log(liveShow)
+            document.querySelector('.lifebar').innerHTML = liveShow
+        }
+        if (this.lives === 0) {
             isDead = true
+        }
+        if (this.isColliding) {
+            //TODO - Tornar visual o processo de invencibilidade
+            if(lastTime + invencibilityTime >  Date.now()) {
+                return
+            }
+            --this.lives
+            lastTime = Date.now()
             console.log(this.lives)
         }
     }
@@ -85,6 +104,7 @@ class Circle extends GameObject {
         this.radius = 30
     }
     draw() {
+        //TODO - A ordem que as coisas são construidas importam
         this.context.fillStyle = this.isColliding?'#F3F3F3':'#F3F3F3';
         this.context.beginPath();
         this.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
@@ -198,8 +218,7 @@ function circleIntersect(x1, y1, r1, x2, y2, r2) {
 }
 
 //TODO - Manipular aqui para inserir nossos menus
-function detectEdgeCollisions()
-{
+function detectEdgeCollisions() {
     let obj;
     for (let i = 0; i < gameObjects.length; i++)
     {
@@ -222,37 +241,37 @@ function detectEdgeCollisions()
 }
 
 function gameLoop(timeStamp) {
-    secondsPassed = (timeStamp - oldTimeStamp) / 1000;
-    oldTimeStamp = timeStamp;
-    for (let i = 0; i < gameObjects.length; i++) {
-        gameObjects[i].update(secondsPassed);
-    }
-    detectCollisions();
-    detectEdgeCollisions()
-    clearCanvas();
-
-    for (let i = 0; i < gameObjects.length; i++) {
-        if(words.length === 0) {
-            createAnEnemy()
-            word = words[0]
+    if (!isDead) {
+        secondsPassed = (timeStamp - oldTimeStamp) / 1000;
+        oldTimeStamp = timeStamp;
+        for (let i = 0; i < gameObjects.length; i++) {
+            gameObjects[i].update(secondsPassed);
         }
-        html = "<h1>" + word + "</h1>"
+        detectCollisions();
+        detectEdgeCollisions()
+        clearCanvas();
 
-        timerInterval = setInterval(function printTime() {
-            if(!isDead) {
-                elapsedTime = Date.now() - startTime;
+        for (let i = 0; i < gameObjects.length; i++) {
+            if (words.length === 0) {
+                createAnEnemy()
+                word = words[0]
             }
-        }, 10);
-        timer = "<h1>" + timeToString(elapsedTime) + "</h1>"
-        document.querySelector('.text').innerHTML = html
-        document.querySelector('.cronometer').innerHTML = timer
-        gameObjects[i].draw();
-    }
-    window.requestAnimationFrame(gameLoop);
-}
+            html = "<h1>" + word + "</h1>"
 
-function pause() {
-    clearInterval(timerInterval);
+            timerInterval = setInterval(function printTime() {
+                if (!isDead) {
+                    elapsedTime = Date.now() - startTime;
+                }
+            }, 10);
+            timer = "<h1>" + timeToString(elapsedTime) + "</h1>"
+            document.querySelector('.text').innerHTML = html
+            document.querySelector('.cronometer').innerHTML = timer
+            gameObjects[i].draw();
+        }
+        window.requestAnimationFrame(gameLoop);
+    } else {
+        clearCanvas();
+    }
 }
 
 function timeToString(time) {
