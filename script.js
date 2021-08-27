@@ -1,8 +1,10 @@
-const canvasWidth = 750;
-const canvasHeight = 400;
+const canvasWidth = document.getElementsByTagName('canvas')[0].clientWidth;
+const canvasHeight = document.getElementsByTagName('canvas')[0].clientHeight;
+console.log(canvasWidth, canvasHeight)
 const restitution = 0.90;
 
 let canvas;
+
 let context;
 let secondsPassed = 0;
 let oldTimeStamp = 0;
@@ -119,6 +121,8 @@ class Circle extends GameObject {
 function init() {
     canvas = document.getElementById('canvas');
     context = canvas.getContext('2d');
+    canvas.width = canvasWidth
+    canvas.height = canvasHeight
     createWorld();
     word = words[0]
     document.addEventListener('keydown', (event) => {

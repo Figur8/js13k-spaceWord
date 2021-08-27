@@ -1,20 +1,37 @@
 body {
     background-color: black;
+
 }
 
 canvas {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
     overflow: hidden;
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    display: block;
+    box-shadow: 0 30px 40px rgba(0,0,0,.1);
 }
 
-h1 {
-    padding-left: 0;
-    padding-right: 0;
-    margin-left: auto;
-    margin-right: auto;
-    color: aliceblue;
+.text {
+    position: absolute;
+    color: white;
+    left: 48%;
+    bottom: 89px;
+    pointer-events: none;
+}
+
+.cronometer {
+    position: absolute;
+    color: white;
+    left: 89%;
+    top: 10px;
+    pointer-events: none;
+}
+
+.lifebar {
+    position: absolute;
+    color: white;
+    left: 4%;
+    top: 10px;
+    pointer-events: none;
 }
