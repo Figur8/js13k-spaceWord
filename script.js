@@ -19,6 +19,7 @@ let startTime
 let isDead = false
 let lastTime = 0
 let invencibilityTime = 2000
+let isGameBegins = false
 
 
 window.onload = init;
@@ -142,7 +143,7 @@ function init() {
 
 function createWorld() {
     gameObjects = [
-        new MainCharacter(context, 300, 300, 50, -50),
+        new MainCharacter(context, mouseX, mouseY, 50, -50),
     ];
     startTime = Date.now() - elapsedTime;
     createAnEnemy();
@@ -245,37 +246,48 @@ function detectEdgeCollisions() {
 }
 
 function gameLoop(timeStamp) {
-    if (!isDead) {
-        secondsPassed = (timeStamp - oldTimeStamp) / 1000;
-        oldTimeStamp = timeStamp;
-        for (let i = 0; i < gameObjects.length; i++) {
-            gameObjects[i].update(secondsPassed);
-        }
-        detectCollisions();
-        detectEdgeCollisions()
-        clearCanvas();
+    if(isGameBegins) {
+        document.getElementsByTagName('nav')[0].style.visibility = "hidden"
 
-        for (let i = 0; i < gameObjects.length; i++) {
-            if (words.length === 0) {
-                createAnEnemy()
-                word = words[0]
+        if (!isDead) {
+            secondsPassed = (timeStamp - oldTimeStamp) / 1000;
+            oldTimeStamp = timeStamp;
+            for (let i = 0; i < gameObjects.length; i++) {
+                gameObjects[i].update(secondsPassed);
             }
-            html = "<h1>" + word + "</h1>"
+            detectCollisions();
+            detectEdgeCollisions()
+            clearCanvas();
 
-            timerInterval = setInterval(function printTime() {
-                if (!isDead) {
-                    elapsedTime = Date.now() - startTime;
+            for (let i = 0; i < gameObjects.length; i++) {
+                if (words.length === 0) {
+                    createAnEnemy()
+                    word = words[0]
                 }
-            }, 10);
-            timer = "<h1>" + timeToString(elapsedTime) + "</h1>"
-            document.querySelector('.text').innerHTML = html
-            document.querySelector('.cronometer').innerHTML = timer
-            gameObjects[i].draw();
+                html = "<h1>" + word + "</h1>"
+
+                timerInterval = setInterval(function printTime() {
+                    if (!isDead) {
+                        elapsedTime = Date.now() - startTime;
+                    }
+                }, 10);
+                timer = "<h1>" + timeToString(elapsedTime) + "</h1>"
+                document.querySelector('.text').innerHTML = html
+                document.querySelector('.cronometer').innerHTML = timer
+                gameObjects[i].draw();
+            }
+            window.requestAnimationFrame(gameLoop);
+        } else {
+            clearCanvas();
+            console.log("qual foi")
+            document.getElementsByClassName('text')[0].innerHTML = ""
         }
-        window.requestAnimationFrame(gameLoop);
-    } else {
-        clearCanvas();
     }
+}
+
+function beginGame() {
+    isGameBegins = true
+    init()
 }
 
 function timeToString(time) {
@@ -301,4 +313,8 @@ function timeToString(time) {
 
 function clearCanvas() {
     context.clearRect(0, 0, canvas.width, canvas.height);
+}
+
+function sike() {
+    alert("do you really think that i'll let you go easy? PLAY THE GAME!")
 }

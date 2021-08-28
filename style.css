@@ -139,3 +139,76 @@ canvas {
         transform: scale(3.5);
     }
 }
+
+nav {
+    height: 25%;
+    width: 30%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    -webkit-transform: translate(-50%, -50%);
+    font: normal 1.2em Offside;
+}
+
+li a{
+    display: block;
+}
+a{
+    text-decoration: none;
+    color: #eee;
+    transition: all linear .3s;
+}
+a:hover{
+    color: #ecbb15;
+    position: relative;
+    cursor: pointer;
+    text-shadow: rgb(172, 136, 15) 0px 1px 0px,
+    rgb(108, 86, 10) 0px 2px 0px,
+    rgba(0, 0, 0, 0.199219) 0px 3px 1px,
+    rgba(0, 0, 0, 0.296875) 0px 4px 2px;
+    transition: all linear .3s;
+}
+li a:after{
+    content: attr(data-title);
+    padding: 4px 8px;
+    line-height: 100%;
+    color: #fff;
+    position: absolute;
+    left: 40%;
+    top: 70%;
+    white-space: nowrap;
+    font-size: .7em;
+    background: rgba(23, 172, 144, .8);
+    opacity: 0;
+    text-shadow: none;
+}
+li a:hover:after{
+    opacity: 1;
+    transition: all linear .5s .2s ;
+}
+ul{
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+li{
+    width: 100%;
+    text-align: center;
+    line-height: 2.5em;
+    float: left;
+}
+li:first-child{
+    line-height: 60px;
+    font-size: 1.5em;
+    text-shadow: rgb(187, 187, 187) 0px 1px 0px,
+    rgb(181, 181, 181) 0px 2px 0px,
+    rgba(0, 0, 0, 0.199219) 0px 3px 1px,
+    rgba(0, 0, 0, 0.296875) 0px 4px 3px;
+}
+li:first-child a:hover{
+    -webkit-animation: anim infinite 1.5s;
+}
+
+#retry {
+    visibility: hidden;
+}
