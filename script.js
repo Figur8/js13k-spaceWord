@@ -9,8 +9,8 @@ let context;
 let secondsPassed = 0;
 let oldTimeStamp = 0;
 let gameObjects;
-let mouseX = 300
-let mouseY = 300
+let mouseX
+let mouseY
 let words = []
 let word = ""
 let elapsedTime = 0;
@@ -322,4 +322,17 @@ function clearCanvas() {
 
 function sike() {
     alert("do you really think that i'll let you go easy? PLAY THE GAME!")
+}
+
+function restartStateGame() {
+    secondsPassed = 0;
+    oldTimeStamp = 0;
+    gameObjects;
+    words = []
+    word = ""
+    elapsedTime = 0;
+    timerInterval;
+    startTime
+    lastTime = 0
+    invencibilityTime = 2000
 }
