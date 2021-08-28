@@ -290,7 +290,9 @@ function gameLoop(timeStamp) {
 
 function beginGame() {
     isGameBegins = true
+    isDead = false
     init()
+    document.getElementById('retry').style.visibility = "hidden"
 }
 
 function timeToString(time) {
