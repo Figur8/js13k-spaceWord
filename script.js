@@ -279,8 +279,11 @@ function gameLoop(timeStamp) {
             window.requestAnimationFrame(gameLoop);
         } else {
             clearCanvas();
-            console.log("qual foi")
             document.getElementsByClassName('text')[0].innerHTML = ""
+            document.getElementsByClassName('cronometer')[0].innerHTML = ""
+            document.getElementById('retry').style.visibility = "visible"
+            document.querySelector('.timefinish').innerHTML = timer
+
         }
     }
 }

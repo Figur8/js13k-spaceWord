@@ -212,3 +212,7 @@ li:first-child a:hover{
 #retry {
     visibility: hidden;
 }
+
+.timefinish {
+    color: white;
+}
