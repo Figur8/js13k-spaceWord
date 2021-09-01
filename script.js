@@ -278,7 +278,6 @@ function gameLoop(timeStamp) {
             }
             window.requestAnimationFrame(gameLoop)
         } else {
-            console.log("o que acontece com o timer: ", timer)
             clearCanvas();
             document.getElementsByClassName('text')[0].innerHTML = ""
             document.getElementsByClassName('cronometer')[0].innerHTML = ""
@@ -292,7 +291,6 @@ function gameLoop(timeStamp) {
 function beginGame() {
     isGameBegins = true
     isDead = false
-    timer = "00:00:00"
     elapsedTime = 0
     //TODO - melhor não usaro  init, e sim reiniciar o estado inicial do jogo.
     init()
