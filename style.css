@@ -12,7 +12,7 @@ canvas {
     height: 100%;
     overflow: hidden;
     position: absolute;
-    cursor: none;
+    /*cursor: none;*/
 }
 
 .text {
