@@ -253,7 +253,7 @@ function detectEdgeCollisions() {
 function gameLoop(timeStamp) {
     if(isGameBegins) {
         document.getElementsByTagName('nav')[0].style.visibility = "hidden"
-
+        document.getElementsByTagName('canvas')[0].style.cursor = 'none'
         if (!isDead) {
             secondsPassed = (timeStamp - oldTimeStamp) / 1000;
             oldTimeStamp = timeStamp;
@@ -287,6 +287,7 @@ function gameLoop(timeStamp) {
             document.getElementsByClassName('text')[0].innerHTML = ""
             document.getElementsByClassName('cronometer')[0].innerHTML = ""
             document.getElementById('retry').style.visibility = "visible"
+            document.getElementsByTagName('canvas')[0].style.cursor = 'default'
             document.querySelector('.timefinish').innerHTML = timer
 
         }
@@ -294,12 +295,12 @@ function gameLoop(timeStamp) {
 }
 
 function beginGame() {
+    document.getElementById('retry').style.visibility = "hidden"
     isGameBegins = true
     isDead = false
     elapsedTime = 0
     //TODO - melhor não usaro  init, e sim reiniciar o estado inicial do jogo.
     init()
-    document.getElementById('retry').style.visibility = "hidden"
 }
 
 function timeToString(time) {
