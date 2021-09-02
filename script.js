@@ -147,7 +147,13 @@ function createWorld() {
     ];
     startTime = Date.now() - elapsedTime;
     createAnEnemy();
-    setInterval(createAnEnemy, 3000);
+    const interval = setInterval(function() {
+        if(!isDead) {
+            createAnEnemy()
+        } else {
+            clearInterval(interval)
+        }
+    }, 3000);
 }
 
 const characters ='abcdefghijklmnopqrstuvwxyz';
@@ -164,7 +170,6 @@ function generateString(length) {
 
 function createAnEnemy() {
     words.push(generateString(getRandomInt(4, 7)))
-    console.log(word)
     gameObjects.push(new Circle(context, getRandomInt(0, 500), getRandomInt(0, 500), getRandomInt(0, 100), getRandomInt(0, 100)))
 }
 
