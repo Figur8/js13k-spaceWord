@@ -170,7 +170,7 @@ function generateString(length) {
 
 function createAnEnemy() {
     words.push(generateString(getRandomInt(4, 7)))
-    gameObjects.push(new Circle(context, getRandomInt(0, 500), getRandomInt(0, 500), getRandomInt(0, 100), getRandomInt(0, 100)))
+    gameObjects.push(new Circle(context, getRandomInt(0, canvasWidth), getRandomInt(0, canvasHeight), getRandomInt(0, 100), getRandomInt(0, 100)))
 }
 
 function getRandomInt(min, max) {
