@@ -27,28 +27,24 @@ let pintinhaColor = "black"
 
 //AUDIO
 let audioCtx
-
-function playTone(freq=2, start=0, iniGain=1, duration=1, freqEnd, freqEndSec, fadeDelay) {
-    //log(freq, start, duration, freqEnd, freqEndSec, fadeDelay)
+let freqs = [261.63, 311.13, 261.63, 100, 200, 500, 415.30, 293.66];
+function play(frequency){
     setTimeout(()=> {
-        const currTime = audioCtx.currentTime
-        const oscillator = audioCtx.createOscillator()
-        const gainNode = audioCtx.createGain()
-        oscillator.frequency.value = 0
-        oscillator.frequency.setValueAtTime(freq, currTime)
-        oscillator.frequency.linearRampToValueAtTime(freqEnd||freq, currTime + (freqEndSec||duration))
-        gainNode.gain.setValueAtTime(iniGain, currTime)
-        gainNode.gain.linearRampToValueAtTime(0, currTime + (fadeDelay||duration))
-        oscillator.connect(gainNode)
-        gainNode.connect(audioCtx.destination)
-        oscillator.start()
-        setTimeout(()=> oscillator.disconnect(), (fadeDelay||duration)*1000)
-    }, start*1000)
+        var oscillator = audioCtx.createOscillator()
+        var gain = audioCtx.createGain()
+        oscillator.connect(gain)
+        gain.gain.value = 1/freqs.length;
+        oscillator.frequency.value = freqs[frequency]
+        oscillator.start(1)
+        gain.connect(audioCtx.destination)
+        gain.gain.exponentialRampToValueAtTime(
+            0.00001, audioCtx.currentTime + 6.0
+        )
+    }, 20)
 }
 
 function initAudio() {
     audioCtx = new AudioContext()//({sampleRate: 8000})
-    playTone() // Warm up speaker
 }
 //AUDIO
 
@@ -146,6 +142,9 @@ class MainCharacter extends GameObject {
         }
         if (this.lives === 0) {
             isDead = true
+            play(3)
+            play(4)
+            play(5)
         }
         if (this.isColliding) {
             //TODO - Tornar visual o processo de invencibilidade
@@ -236,7 +235,9 @@ function init() {
                 words.splice(0,1)
                 word = words[0]
                 gameObjects.splice(1, 1)
-                playTone(100, 0, 5, 1, 2, 1, 0)
+                play(1)
+                play(2)
+                play(3)
             }
         }
     }, false);
