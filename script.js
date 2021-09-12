@@ -25,7 +25,32 @@ let pintinhaColor1 = "white"
 let pintinhaColor = "black"
 
 
+//AUDIO
+let audioCtx
 
+function playTone(freq=2, start=0, iniGain=1, duration=1, freqEnd, freqEndSec, fadeDelay) {
+    //log(freq, start, duration, freqEnd, freqEndSec, fadeDelay)
+    setTimeout(()=> {
+        const currTime = audioCtx.currentTime
+        const oscillator = audioCtx.createOscillator()
+        const gainNode = audioCtx.createGain()
+        oscillator.frequency.value = 0
+        oscillator.frequency.setValueAtTime(freq, currTime)
+        oscillator.frequency.linearRampToValueAtTime(freqEnd||freq, currTime + (freqEndSec||duration))
+        gainNode.gain.setValueAtTime(iniGain, currTime)
+        gainNode.gain.linearRampToValueAtTime(0, currTime + (fadeDelay||duration))
+        oscillator.connect(gainNode)
+        gainNode.connect(audioCtx.destination)
+        oscillator.start()
+        setTimeout(()=> oscillator.disconnect(), (fadeDelay||duration)*1000)
+    }, start*1000)
+}
+
+function initAudio() {
+    audioCtx = new AudioContext()//({sampleRate: 8000})
+    playTone() // Warm up speaker
+}
+//AUDIO
 
 window.onload = init;
 
@@ -58,8 +83,9 @@ class MainCharacter extends GameObject {
 
         //Pintinha central
         this.context.beginPath();
-        context.fillStyle = "black";
+        context.fillStyle = "white";
         this.context.arc(this.x, this.y, 7, 0, 2 * Math.PI, false);
+        this.context.lineWidth = 1;
         this.context.fill();
 
         //Circulo de pintinhas
@@ -193,6 +219,8 @@ class Circle extends GameObject {
 }
 
 function init() {
+    initAudio()
+
     canvas = document.getElementById('canvas');
     context = canvas.getContext('2d');
     canvas.width = canvasWidth
@@ -208,6 +236,7 @@ function init() {
                 words.splice(0,1)
                 word = words[0]
                 gameObjects.splice(1, 1)
+                playTone(100, 0, 5, 1, 2, 1, 0)
             }
         }
     }, false);
