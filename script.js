@@ -261,7 +261,6 @@ function createWorld() {
         new MainCharacter(context, mouseX, mouseY, 50, -50),
     ];
     startTime = Date.now() - elapsedTime;
-    createAnEnemy();
     const interval = setInterval(function() {
         if(!isDead) {
             createAnEnemy()
