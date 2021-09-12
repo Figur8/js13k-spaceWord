@@ -20,6 +20,11 @@ let isDead = false
 let lastTime = 0
 let invencibilityTime = 2000
 let isGameBegins = false
+let reverse = false
+let pintinhaColor1 = "white"
+let pintinhaColor = "black"
+
+
 
 
 window.onload = init;
@@ -50,6 +55,55 @@ class MainCharacter extends GameObject {
         this.context.beginPath();
         this.context.arc(mouseX, mouseY, this.radius, 0, 2 * Math.PI, false);
         this.context.fill()
+
+        //Pintinha central
+        this.context.beginPath();
+        context.fillStyle = "black";
+        this.context.arc(this.x, this.y, 7, 0, 2 * Math.PI, false);
+        this.context.fill();
+
+        //Circulo de pintinhas
+
+
+        this.context.beginPath();
+        context.fillStyle = pintinhaColor;
+        this.context.arc(this.x + 23, this.y, 5, 0, 2 * Math.PI, false);
+        this.context.fill();
+
+        this.context.beginPath();
+        context.fillStyle = pintinhaColor;
+        this.context.arc(this.x - 23, this.y, 5, 0, 2 * Math.PI, false);
+        this.context.fill();
+
+        this.context.beginPath();
+        context.fillStyle = pintinhaColor;
+        this.context.arc(this.x, this.y - 23, 5, 0, 2 * Math.PI, false);
+        this.context.fill();
+
+        this.context.beginPath();
+        context.fillStyle = pintinhaColor;
+        this.context.arc(this.x, this.y + 23, 5, 0, 2 * Math.PI, false);
+        this.context.fill();
+
+        this.context.beginPath();
+        context.fillStyle = pintinhaColor1;
+        this.context.arc(this.x + 15, this.y + 15, 5, 0, 2 * Math.PI, false);
+        this.context.fill();
+
+        this.context.beginPath();
+        context.fillStyle = pintinhaColor1;
+        this.context.arc(this.x - 15, this.y - 15, 5, 0, 2 * Math.PI, false);
+        this.context.fill();
+
+        this.context.beginPath();
+        context.fillStyle = pintinhaColor1;
+        this.context.arc(this.x + 15, this.y - 15, 5, 0, 2 * Math.PI, false);
+        this.context.fill();
+
+        this.context.beginPath();
+        context.fillStyle = pintinhaColor1;
+        this.context.arc(this.x - 15, this.y + 15, 5, 0, 2 * Math.PI, false);
+        this.context.fill();
     }
     update() {
         //TODO - precisa calcular velocidade com o mouse
@@ -74,7 +128,6 @@ class MainCharacter extends GameObject {
             }
             --this.lives
             lastTime = Date.now()
-            console.log(this.lives)
         }
     }
     setMousePosition(e) {
@@ -107,10 +160,30 @@ class Circle extends GameObject {
         this.radius = 30
     }
     draw() {
-        //TODO - A ordem que as coisas são construidas importam
         this.context.fillStyle = this.isColliding?'#F3F3F3':'#F3F3F3';
         this.context.beginPath();
         this.context.arc(this.x, this.y, this.radius, 0, 2 * Math.PI, false);
+        this.context.fill();
+        this.context.stroke()
+
+        //Pintinha
+        this.context.beginPath();
+        context.fillStyle = "black";
+        this.context.arc(this.x + 9, this.y - 8, 2, 0, 2 * Math.PI, false);
+        this.context.fill();
+        this.context.stroke()
+
+        //Pintinha
+        this.context.beginPath();
+        context.fillStyle = "black";
+        this.context.arc(this.x + 7, this.y + 10, 4, 0, 2 * Math.PI, false);
+        this.context.fill();
+        this.context.stroke()
+
+        //Pintinha
+        this.context.beginPath();
+        context.fillStyle = "black";
+        this.context.arc(this.x - 15, this.y, 7, 0, 2 * Math.PI, false);
         this.context.fill();
     }
     update(secondsPassed) {
@@ -142,6 +215,18 @@ function init() {
 }
 
 function createWorld() {
+    setInterval(function () {
+        if(reverse) {
+            reverse = false
+            pintinhaColor = "white"
+            pintinhaColor1 = "black"
+        } else {
+            reverse = true
+            pintinhaColor1 = "white"
+            pintinhaColor = "black"
+        }
+
+    }, 3000)
     gameObjects = [
         new MainCharacter(context, mouseX, mouseY, 50, -50),
     ];
