@@ -1,10 +1,8 @@
 const canvasWidth = document.getElementsByTagName('canvas')[0].clientWidth;
 const canvasHeight = document.getElementsByTagName('canvas')[0].clientHeight;
-console.log(canvasWidth, canvasHeight)
+
 const restitution = 0.90;
-
 let canvas;
-
 let context;
 let secondsPassed = 0;
 let oldTimeStamp = 0;
@@ -137,7 +135,6 @@ class MainCharacter extends GameObject {
                 liveShow = liveShow + "🚀"
             }
             liveShow = liveShow + "</h1>"
-            console.log(liveShow)
             document.querySelector('.lifebar').innerHTML = liveShow
         }
         if (this.lives === 0) {
